@@ -79,7 +79,13 @@ int main() {
             } else {
                 join(id);
             }
-        } else {
+        }
+        else {
+        	if (magic == 0x46464952) {
+        		/* RIFF/WAVE file */
+        		puts("WAVE file\n");
+        	}
+
             /* write it */
             seek(fd,0);
             char buf[100];
