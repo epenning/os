@@ -1,3 +1,8 @@
+Try using:
+~~~~~~~~~~~
+
+    qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
+
 To compile:
 ~~~~~~~~~~~
 
@@ -48,11 +53,3 @@ kernel/debug.cc
 Process::trace(...) is another useful function. It includes information
 about the process generating the output
 
-Files to leave alone:
-~~~~~~~~~~~~~~~~~~~~~
-
-Makefile
-common.mak
-kernel/Makefile
-user/*
-fat439/*
