@@ -1,7 +1,12 @@
-Try using:
+To run qemu try using:
 ~~~~~~~~~~~
 
     qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
+    
+For gdb:
+~~~~~~~~~~~
+
+    qemu -S -s -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
 
 To compile:
 ~~~~~~~~~~~
