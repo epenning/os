@@ -12,24 +12,24 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 
-	int magic = 0;
-	readFully(fd,&magic,4);
+	int chunkID = 0;
+	readFully(fd,&chunkID,4);
 
-	if (magic != 0x46464952) {
+	if (chunkID != 0x46464952) {
 		puts("error: not a RIFF file\n");
 		return 0;
 	}
 	int chunkSize = 0;
 	readFully(fd, &chunkSize, 4);
 
-	int format = 0;
-	readFully(fd, &format, 4);
-	if (format != 0x45564157) {
+	int waveID = 0;
+	readFully(fd, &waveID, 4);
+	if (waveID != 0x45564157) {
 		puts("error: not WAVE file\n");
 		return 0;
 	}
 
-	/* SubChunk 1 fmt */
+	/* SubChunk 1: fmt */
 
 	int subchunkID = 0;
 	// read subchunk 1 ID
@@ -41,19 +41,22 @@ int main(int argc, char** argv) {
 	// read subchunk1 size
 	readFully(fd, &buff, 4);
 	int subchunkSize = buff;
+	// read format tag
 	buff = 0;
-	// read audio format
 	readFully(fd, &buff, 2);
+	puts("format: "); putdec(buff); puts("\n");
 	// read num channels
+	buff = 0;
 	readFully(fd, &buff, 2);
 	// read sample rate
 	readFully(fd, &buff, 4);
 	// read byte rate
 	readFully(fd, &buff, 4);
-	buff = 0;
 	// read block align
+	buff = 0;
 	readFully(fd, &buff, 2);
 	// read bits per sample
+	buff = 0;
 	readFully(fd, &buff, 2);
 
 	if (subchunkSize > 16) {
