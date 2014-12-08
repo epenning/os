@@ -94,6 +94,7 @@ extern "C" void pic_irq(int irq) {
     case 0: Pit::handler(); break;
     case 1: /*Keyboard::handler();*/ break;
     case 4: /*com1 */ break;
+    case 7: /*sb16*/ Debug::printf("IRQ7\n"); break;
     case 15: /* ide */ break;
     default: Debug::printf("interrupt %d\n",irq);
     }

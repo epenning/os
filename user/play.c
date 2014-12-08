@@ -1,7 +1,10 @@
 #include "libc.h"
 
 int main(int argc, char** argv) {
-
+	if(argc < 2){
+		puts(argv[0]); puts(": no file specified\n");
+		return -1;
+	}
 	int fd = open(argv[1]);
 	if (fd < 0) {
 		puts(argv[0]); puts(": ");
