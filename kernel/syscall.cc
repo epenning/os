@@ -7,6 +7,8 @@
 #include "err.h"
 #include "u8250.h"
 #include "libk.h"
+#include "sound.h"
+#include "pit.h"
 
 void Syscall::init(void) {
     IDT::addTrapHandler(100,(uint32_t)syscallTrap,3);
@@ -137,6 +139,16 @@ extern "C" long syscallHandler(uint32_t* context, long num, long a0, long a1) {
     case 14: /* getchar */
         {
               return U8250::it->get();
+        }
+    case 15: /* play */
+        {
+            SoundCard::play((unsigned char)a0);
+            return 0;
+        }
+    case 16: /* hacky wait */
+        {
+            Process::sleepForJiffies(Pit::hz/(uint32_t)a0);
+            return 0;
         }
     default:
         Process::trace("syscall(%d,%d,%d)",num,a0,a1);

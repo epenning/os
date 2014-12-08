@@ -16,5 +16,8 @@ extern long down(long sem);
 extern long fork();
 extern long join(long proc);
 extern long shutdown();
+extern long play(unsigned char byte);
+// super hacky, fix plz
+extern long wait(long sampleRate);
 
 #endif

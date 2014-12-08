@@ -127,10 +127,13 @@ public:
     }
 
     // sleep until the given time
-    static void sleepUntil(uint32_t seconds);
+    static void sleepUntil(uint32_t seconds, bool isJiffies);
 
     // sleep for the given number of seconds
     static void sleepFor(uint32_t seconds);
+
+    // sleep for the given number of jiffies
+    static void sleepForJiffies(uint32_t jiffies);
 
     // called by pit for each tick
     static void tick();

@@ -12,6 +12,7 @@
 #include "fs.h"
 #include "ide.h"
 #include "idle.h"
+#include "sound.h"
 
 extern "C"
 void kernelMain(void) {
@@ -69,7 +70,7 @@ void kernelMain(void) {
 
     Keyboard::init();           // initialize the keyboard
 
-    Pit::init(1000 /* Hz */);   // enable the PIT, interrupts still disabled
+    Pit::init(11025 /* Hz */);   // enable the PIT, interrupts still disabled
 
     /* hdd */
     IDE hdd(3);
@@ -78,6 +79,10 @@ void kernelMain(void) {
     /* rootfs */
     FileSystem::init(new Fat439(&hdd));
     Process::trace("initialized root filesystem");
+
+    /* sound card */
+    SoundCard::init();
+    Process::trace("i hope sound works");
 
     /* Create the Primordial process */
     Process* initProcess = new Init();

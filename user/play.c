@@ -1,4 +1,17 @@
 #include "libc.h"
+#include "stdint.h"
+
+#pragma pack(push)
+#pragma pack(2)	
+struct {
+	int16_t format;
+	int16_t numChannels;
+	int32_t sampleRate;
+	int32_t byteRate;
+	int16_t blockAlign;
+	int16_t bitsPerSample;
+} formatData;
+#pragma pack(pop)
 
 int main(int argc, char** argv) {
 	if(argc < 2){
@@ -37,27 +50,26 @@ int main(int argc, char** argv) {
 	if (subchunkID != 0x20746d66) {
 		puts("first subchunk not fmt\n");
 	}
-	int buff = 0;
+	int subchunkSize = 0;
 	// read subchunk1 size
-	readFully(fd, &buff, 4);
-	int subchunkSize = buff;
-	// read format tag
-	buff = 0;
-	readFully(fd, &buff, 2);
-	puts("format: "); putdec(buff); puts("\n");
-	// read num channels
-	buff = 0;
-	readFully(fd, &buff, 2);
-	// read sample rate
-	readFully(fd, &buff, 4);
-	// read byte rate
-	readFully(fd, &buff, 4);
-	// read block align
-	buff = 0;
-	readFully(fd, &buff, 2);
-	// read bits per sample
-	buff = 0;
-	readFully(fd, &buff, 2);
+	readFully(fd, &subchunkSize, 4);
+	puts("format chunk size: "); putdec(subchunkSize); puts("\n");
+
+	readFully(fd, &formatData, 16);
+	if(subchunkSize > 16){
+		char temp[subchunkSize];
+		readFully(fd, temp, subchunkSize - 16);
+	}
+	puts("format: 0x"); puthex(formatData.format); puts("\n");
+	puts("numChannels: "); putdec(formatData.numChannels); puts("\n");
+	puts("sampleRate: "); putdec(formatData.sampleRate); puts("\n");
+	puts("byteRate: "); putdec(formatData.byteRate); puts("\n");
+	puts("blockAlign: "); putdec(formatData.blockAlign); puts("\n");
+	puts("bitsPerSample: "); putdec(formatData.bitsPerSample); puts("\n");
+
+	// stuff other than 8-bit PCM not implemented yet
+
+	int buff = 0;
 
 	if (subchunkSize > 16) {
 		// read size of the extension
@@ -85,8 +97,19 @@ int main(int argc, char** argv) {
 		puts("\n");
 	}
 	// read size of data chunk
-	readFully(fd, &buff, 4);
-	subchunkSize = buff;
+	readFully(fd, &subchunkSize, 4);
+	puts("data chunk size: "); putdec(subchunkSize); puts("\n");
+	unsigned char byte = 0;
+	for(int i = 0; i < 5; i++){
+		//TODO: control sample rate
+
+		//play a sample
+		//note that this is hard-coded for 8-bit mono PCM
+		readFully(fd, &byte, 1);
+		puts("playing "); puthex(byte); puts("\n");
+		play(byte);
+		wait(formatData.sampleRate);
+	}
 
 	return 0;
 }

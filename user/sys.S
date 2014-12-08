@@ -150,3 +150,19 @@ getchar:
 	int $100
 	ret
 
+	# long play(unsigned char byte)
+	.global play
+play:
+	mov $15, %eax
+	mov 4(%esp),%ecx
+	int $100
+	ret
+
+	# long wait(long sampleRate)
+	# super hacky, fix plz
+	.global wait
+wait:
+	mov $16, %eax
+	mov 4(%esp),%ecx
+	int $100
+	ret
