@@ -147,7 +147,7 @@ do {							\
  */
 void Init_DMA(void)
 {
-    Debug("Initializing DMA Controller...\n");
+    Debug::printf("Initializing DMA Controller...\n");
 
     /* Reset the controller */
     outb(DMA_MASTER_CLEAR_REG, 0);

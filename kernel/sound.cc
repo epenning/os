@@ -37,7 +37,6 @@ void SoundCard::set_speed() {
 
 void SoundCard::init(){
 	reset();
-	/*
 	if (!Reserve_DMA(1))
 		Debug::printf("reserve DMA failed - should never happen!\n");
 	void* address = (void*)PhysMem::alloc();
@@ -45,13 +44,11 @@ void SoundCard::init(){
 	//dma_setup((uint32_t)address, 0, 0x00);
 	//outb(0xB, 0x58 + 1);				// set DMA mode
 	set_speed();
-	*/
 	write(0xE1);		// get version information
 	int maj = sb16_inb(READ_DATA);
 	int min = sb16_inb(READ_DATA);
 	Process::trace("initialized sb16 v%d.%d", maj, min);
 	/* set SB to have IRQ 5 and DMA 1 */
-	/*
 	sb16_outb(0x4, 0x80);	// IRQ register
 	sb16_outb(0x5, (1 << (5/2 - 1)));
 	sb16_outb(0x4, 0x81);	// DMA register
@@ -62,8 +59,7 @@ void SoundCard::init(){
 	write (0x00);		// "program dsp with transfer mode mono
 	write ((0x1000-1) >> 0);	// give length of single fragment to dsp
 	write ((0x1000-1) >> 8);
-	*/
-	//write(0x1C);
+
 }
 
 void SoundCard::reset(){
