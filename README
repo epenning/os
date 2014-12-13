@@ -1,12 +1,14 @@
 To run qemu try using:
 ~~~~~~~~~~~
 
-    qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
+    qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw all
+    qemu-system-x86_64 -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw all
     
 For gdb:
 ~~~~~~~~~~~
 
-    qemu -S -s -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
+    qemu -S -s -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw all
+    qemu-system-x86_64 -S -s -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw all
 
 To compile:
 ~~~~~~~~~~~

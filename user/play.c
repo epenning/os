@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
 	readFully(fd, &subchunkSize, 4);
 	puts("data chunk size: "); putdec(subchunkSize); puts("\n");
 	unsigned char byte = 0;
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < 10; i++){
 		//TODO: control sample rate
 
 		//play a sample

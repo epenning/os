@@ -21,9 +21,11 @@ private:
 	//commands
 	static const uint32_t SPEAKER_ON = 0xD1;
 	static const uint32_t SPEAKER_OFF = 0xD3;
+	static const uint32_t AUTO_DMA8 = 0x1C;
 public:
 	static int sb16_inb(int offset);
 	static void sb16_outb(int offset, int value);
+	static void dma_setup(uint32_t address, int count, int mode);
     static void init();
     static void reset();
     static int write(int value);
