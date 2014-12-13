@@ -9,7 +9,7 @@ expect_after {
     }
 }
 
-spawn qemu-system-x86_64 -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
+spawn env QEMU_AUDIO_DRV=none qemu-system-x86_64 -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
 
 expect "shell> "
 send "play m.wav 10\r"
