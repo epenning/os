@@ -3,6 +3,8 @@
 #include "machine.h"
 #include "debug.h"
 #include "process.h"
+#include "dma.h"
+#include "heap.h"
 
 int SoundCard::sb16_inb(int offset){
 	return inb(BASE + offset);
@@ -27,9 +29,21 @@ void SoundCard::dma_setup(uint32_t address, int count, int mode) {
 	outb(0xA, 1);					// disable DMA channel
 }
 
+void SoundCard::set_speed() {
+	write(0x41);		// output rate
+	write(22050 >> 8);	// high byte of speed
+	write(22050);		// low byte of speed
+}
 
 void SoundCard::init(){
 	reset();
+	if (!Reserve_DMA(0))
+		Debug::printf("reserve DMA failed - should never happen!\n");
+	void* address = (void*)PhysMem::alloc();
+	Setup_DMA(DMA_WRITE, 0, address, 0x1000);
+	//dma_setup((uint32_t)address, 0, 0x00);
+	outb(0xB, 0x58 + 1);				// set DMA mode
+	set_speed();
 	write(0xE1);		// get version information
 	int maj = sb16_inb(READ_DATA);
 	int min = sb16_inb(READ_DATA);
@@ -37,6 +51,9 @@ void SoundCard::init(){
 	write(SPEAKER_ON);
 	write(0xC6);		// "program dsp with dma mode 8 bit auto out"
 	//write(0xB6);		// "program dsp with dma mode 16 bit auto out"
+	write (0x00);		// "program dsp with transfer mode mono
+	write ((0x1000-1) >> 0);	// give length of single fragment to dsp
+	write ((0x1000-1) >> 8);
 }
 
 void SoundCard::reset(){

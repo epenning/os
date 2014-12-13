@@ -13,6 +13,7 @@
 #include "ide.h"
 #include "idle.h"
 #include "sound.h"
+#include "dma.h"
 
 extern "C"
 void kernelMain(void) {
@@ -83,6 +84,9 @@ void kernelMain(void) {
     /* sound card */
     SoundCard::init();
     Process::trace("i hope sound works");
+
+    /* DMA */
+    Init_DMA();
 
     /* Create the Primordial process */
     Process* initProcess = new Init();

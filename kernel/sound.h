@@ -26,6 +26,7 @@ public:
 	static int sb16_inb(int offset);
 	static void sb16_outb(int offset, int value);
 	static void dma_setup(uint32_t address, int count, int mode);
+	static void set_speed();
     static void init();
     static void reset();
     static int write(int value);
