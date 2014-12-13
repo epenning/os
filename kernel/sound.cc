@@ -92,5 +92,6 @@ void SoundCard::play(unsigned char byte){
 }
 
 void SoundCard::sound_interrupt_handler() {
+	// should only happen on sound end.
 	Debug::printf("sound interrupt handler went\n");
 }
