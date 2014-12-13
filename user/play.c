@@ -100,7 +100,14 @@ int main(int argc, char** argv) {
 	readFully(fd, &subchunkSize, 4);
 	puts("data chunk size: "); putdec(subchunkSize); puts("\n");
 	unsigned char byte = 0;
-	for(int i = 0; i < 10; i++){
+	int bytestoplay = subchunkSize;
+	// play the specified number of bytes
+	if (argc > 2) {
+		bytestoplay = atoi(argv[2]);
+		if (bytestoplay > subchunkSize)
+			bytestoplay = subchunkSize;
+	}
+	for(int i = 0; i < bytestoplay; i++){
 		//TODO: control sample rate
 
 		//play a sample

@@ -26,14 +26,12 @@ To make the output less noisy:
     make -s clean test
 
 test.out contains the output from running the test
-test.ok contains the expected output
-test.diff contains the difference between the two (using diff)
 
 To run by hand
 ~~~~~~~~~~~~~~
 
     make
-    qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img
+    qemu -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
 
 To attach with gdb
 ~~~~~~~~~~~~~~~~~~

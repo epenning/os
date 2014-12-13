@@ -11,6 +11,7 @@ extern void* realloc(void* ptr, long newSize);
 extern void putdec(unsigned long v);
 extern void puthex(long v);
 extern long readFully(long fd, void* buf, long length);
+extern int atoi(char *p);
 
 void memset(void* p, int val, long sz);
 void memcpy(void* dest, void* src, long n);

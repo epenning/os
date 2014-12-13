@@ -58,3 +58,11 @@ long readFully(long fd, void* buf, long length) {
     }
     return length;
 }
+
+int atoi(char *p) {
+	int num = 0;
+	for (int i=0; p[i]!='\0'; i++) {
+		num = num*10 + (p[i]-'0');
+	}
+	return num;
+}

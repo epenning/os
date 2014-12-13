@@ -72,6 +72,11 @@ Auto-Initialization does not require that, although they each use
 different commands to the SB16. Also, because this implementation using 
 DMA is incomplete, occasionally there’s a bug where I/O times out in qemu.
 
+NOTE: play takes a first argument of which .wav to play and an optional
+      second argument indicating how many bytes to play. If the second
+      argument isn't included, it defaults to playing the whole file.
+      (test only plays 10 bytes)
+
 http://en.wikipedia.org/wiki/WAV
 http://www.h7.dion.ne.jp/~qemu-win/Audio-en.html
 http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
