@@ -1,3 +1,5 @@
+Ben Lin, Erin Pennington
+
 Overview: Things We Did
 - Read metadata and data from a WAVE file
 - Detect and set up a Sound Blaster 16 card
