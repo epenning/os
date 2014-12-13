@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "process.h"
 #include "kbd.h"
+#include "sound.h"
 
 #define C1 0x20           /* command port for PIC1 */
 #define D1 (C1 + 1)       /* data port for PIC1 */
@@ -96,6 +97,7 @@ extern "C" void pic_irq(int irq) {
     case 4: /*com1 */ break;
     case 5: /*sb16*/
     	Debug::printf("IRQ5\n");
+    	SoundCard::sound_interrupt_handler();
     	break;
     case 7: /*sb16*/ Debug::printf("IRQ7\n"); break;
     case 15: /* ide */ break;

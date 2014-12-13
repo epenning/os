@@ -31,6 +31,7 @@ public:
     static void reset();
     static int write(int value);
     static void play(unsigned char byte);
+    static void sound_interrupt_handler();
     static void sleep(uint32_t jiffies);
 };
 
