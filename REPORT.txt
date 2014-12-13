@@ -1,0 +1,81 @@
+Overview: Things We Did
+- Read metadata and data from a WAVE file
+- Detect and set up a Sound Blaster 16 card
+- Play 8-bit mono PCM sounds using direct mode (theoretically)
+- Attempted to implement playing audio using auto-initialization
+  mode (didn’t work out). This included interacting with the DMA 
+  and handling interrupts.
+
+WAVE Files
+
+To play a .wav file, there’s an user level program called ‘play’ 
+that takes a file as an argument. It reads and saves the necessary
+information from the headers using the RIFF and WAVE file
+specifications, and, if the format is in 8-bit mono PCM, attempts
+to play the file using direct mode. The file is split into the
+subchunks, with the first subchunk describing the format of the
+WAVE file. The second subchunk contains data, which, if in 8-bit 
+mono PCM format, contains a contiguous stream of samples that can 
+be played directly to the sound card without using DMA
+(Direct-mapped Memory Access).
+
+Sound Blaster 16
+
+We decided to use the Sound Blaster 16 audio device in qemu because 
+several sources said it was the simplest, de facto standard for PC. 
+It turned out that there was actually surprisingly little 
+easily-found information regarding using the SB16 in a small OS like 
+ours, and the existing documentation was highly technical and and 
+not beginner-friendly. Eventually we found several sources which 
+helped us (cited below).
+
+Playing Audio through Direct Mode
+
+The easiest way to play audio through the sound card is through 
+direct mode. In this mode, we pass the sound card command 0x10, 
+which states that the next byte we pass it is a sample that is to 
+be played. We then continue issuing command 0x10 with more samples 
+until there are no samples left. This mode is restricted to 8-bit 
+mono PCM formats (since we only have 1 channel), and it requires us 
+to regulate the sample rate ourselves.
+
+Can We Name This Project Houston? Because We Have a Problem.
+
+Unfortunately, the SB16 emulator QEMU uses does not implement direct 
+mode and generates a warning when it is used. Thus, we were forced to 
+trudge through even more obscure documentation to figure out how to 
+program the DMA to work with the sound card. The DMA is a beast of its 
+own, and since we were not very familiar with DMA, we borrowed the DMA 
+controller from the University of Maryland’s GeekOS project and 
+attempted to tweak it to meet our needs.
+
+What we would have done given more time:
+
+- Figure out how the DMA actually works and fix our implementation.
+
+We probably didn’t implement the use of DMA entirely correctly, given 
+we only partly finished that, but the SoundCard init function starts 
+out by reserving DMA channel 1, and setting up that channel for 
+writing in a buffer of 4k bytes using the DMA setup from GeekOS. Then 
+it would change the specified IRQ number for the SB16 to be 5 and its 
+DMA channel to 1, which could then be hard-coded in for our use. At 
+that point we would have to decide whether we wanted to use Single 
+Cycle Mode, which would transfer a certain number of bytes then 
+perform an interrupt which we would have to handle manually, or Auto 
+Initialization Mode, which automatically would begin filling new data 
+into the DMA buffer when the interrupt is generated while it still 
+continues transferring and playing further ahead. In Single Cycle mode 
+the interrupt handler would have to restart the DMA transfer, whereas 
+Auto-Initialization does not require that, although they each use 
+different commands to the SB16. Also, because this implementation using 
+DMA is incomplete, occasionally there’s a bug where I/O times out in qemu.
+
+http://en.wikipedia.org/wiki/WAV
+http://www.h7.dion.ne.jp/~qemu-win/Audio-en.html
+http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
+http://users.sosdg.org/~qiyong/mxr/source/minix/drivers/audio/sb16/sb16.c
+https://github.com/qemu/qemu/blob/master/hw/audio/sb16.c
+http://www.cs.umd.edu/class/spring2013/cmsc412/project3.pdf
+https://github.com/ewilson-uri/pr02/blob/90e30e7a06e0afcef14cfa545d4970de3451e046/src/geekos/dma.c
+http://pdos.csail.mit.edu/6.828/2009/readings/hardware/SoundBlaster.pdf
+http://www.inversereality.org/tutorials/sound%20programming/examples/soundblaster16example4.html

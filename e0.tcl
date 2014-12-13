@@ -9,37 +9,10 @@ expect_after {
     }
 }
 
-spawn qemu-system-x86_64 -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img
+spawn qemu-system-x86_64 -nographic --serial mon:stdio -hdc kernel/kernel.img -hdd fat439/user.img -soundhw sb16
 
 expect "shell> "
-send "ls\r"
-
-expect "shell> "
-send "echo This is cool\r"
-
-expect "shell> "
-send "    echo    I know    how  to         handle  spaces   \r"
-
-expect "shell> "
-send "cat f1.txt\r"
-
-expect "shell> "
-send " f1.txt\r"
-
-expect "shell> "
-send "cat f1.txt f2.txt\r"
-
-expect "shell> "
-send "f2.txt f1.txt\r"
-
-expect "shell> "
-send "cat f1.txt f2.txt f1.txt f2.txt\r"
-
-expect "shell> "
-send "gcc\r"
-
-expect "shell> "
-send "cat notThere\r"
+send "play m.wav\r"
 
 expect "shell> "
 send "shutdown\r"
